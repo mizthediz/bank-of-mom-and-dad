@@ -112,10 +112,7 @@ export default function BankerDashboard({ accounts, annualInterestRate }: Props)
 
       {/* Kids list */}
       <div className="max-w-2xl mx-auto px-4 -mt-6 pb-12">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-black text-slate-500 uppercase tracking-widest">
-            {accounts.length === 0 ? 'No kids yet' : `${accounts.length} Kid${accounts.length !== 1 ? 's' : ''}`}
-          </h2>
+        <div className="flex items-center justify-end mb-4">
           <button
             onClick={() => setShowAddKid(true)}
             className="bg-indigo-600 hover:bg-indigo-700 text-white font-black px-4 py-2 rounded-xl text-sm shadow-sm"

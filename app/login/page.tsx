@@ -82,7 +82,7 @@ export default function LoginPage() {
       </div>
 
       {/* Floating login card */}
-      <div className="max-w-md w-full mx-auto px-4 -mt-14 pb-12 flex-1">
+      <div className="relative z-10 max-w-md w-full mx-auto px-4 -mt-14 pb-12 flex-1">
         <div className="bg-white rounded-3xl shadow-xl border border-slate-100 p-7">
           <h2 className="text-xl font-black text-slate-800 mb-1">Welcome back! 👋</h2>
           <p className="text-slate-400 text-sm mb-6">Log in to check your balance.</p>
