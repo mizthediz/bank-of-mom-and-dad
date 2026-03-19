@@ -67,13 +67,20 @@ function LoginForm() {
 
       {/* Header */}
       <div className="bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-700 px-6 pt-12 pb-24 relative">
-        <button
-          onClick={() => setVaultOpen(true)}
-          title="Banker login"
-          className="absolute top-5 right-5 text-white/30 hover:text-white/60 p-2 rounded-xl transition-colors"
-        >
-          🔐
-        </button>
+        <div className="absolute top-5 right-5 flex items-center gap-3">
+          <Link
+            href="/signup"
+            className="text-xs font-black text-white/50 hover:text-white/90 uppercase tracking-widest transition-colors"
+          >
+            Sign Up
+          </Link>
+          <button
+            onClick={() => setVaultOpen(true)}
+            className="text-xs font-black text-white/50 hover:text-white/90 uppercase tracking-widest transition-colors"
+          >
+            Banker Login
+          </button>
+        </div>
         <div className="max-w-md mx-auto text-center">
           <div className="text-5xl mb-4">🏦</div>
           <h1 className="text-3xl font-black text-white tracking-tight">Bank of Mom &amp; Dad</h1>
