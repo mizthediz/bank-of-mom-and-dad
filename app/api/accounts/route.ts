@@ -13,7 +13,7 @@ export async function GET() {
     include: { account: true },
     orderBy: { createdAt: 'asc' },
   })
-  return NextResponse.json(users)
+  return NextResponse.json(users.map((u) => ({ ...u, name: u.name })))
 }
 
 export async function POST(request: Request) {
@@ -21,19 +21,18 @@ export async function POST(request: Request) {
   if (session.role !== 'banker' || !session.bankerId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
-  const { username, password, colorTheme } = await request.json()
-  if (!username || !password) {
-    return NextResponse.json({ error: 'Username and password are required' }, { status: 400 })
+  const { name, username, password, colorTheme } = await request.json()
+  if (!name || !username || !password) {
+    return NextResponse.json({ error: 'Name, username, and password are required' }, { status: 400 })
   }
-  const existing = await prisma.user.findUnique({
-    where: { username_bankerId: { username, bankerId: session.bankerId } },
-  })
+  const existing = await prisma.user.findUnique({ where: { username } })
   if (existing) {
-    return NextResponse.json({ error: 'Username already taken in this bank' }, { status: 409 })
+    return NextResponse.json({ error: 'Username already taken' }, { status: 409 })
   }
   const passwordHash = await bcrypt.hash(password, 10)
   const user = await prisma.user.create({
     data: {
+      name,
       username,
       passwordHash,
       colorTheme: colorTheme ?? 'sky',
@@ -42,5 +41,5 @@ export async function POST(request: Request) {
     },
     include: { account: true },
   })
-  return NextResponse.json(user, { status: 201 })
+  return NextResponse.json({ ...user, name: user.name }, { status: 201 })
 }

@@ -10,6 +10,7 @@ import { getTheme } from '@/lib/themes'
 interface Account {
   id: number
   userId: number
+  name: string
   username: string
   colorTheme: string
   currentBalance: number
@@ -152,10 +153,10 @@ export default function BankerDashboard({ accounts, annualInterestRate, bankName
                           className="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-black"
                           style={{ backgroundColor: theme.hex + '30', color: theme.hex }}
                         >
-                          {account.username.charAt(0).toUpperCase()}
+                          {account.name.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="font-black text-slate-800 capitalize">{account.username}</p>
+                          <p className="font-black text-slate-800">{account.name}</p>
                           <p className="text-xs text-slate-400 font-medium">Last activity: {lastDate}</p>
                         </div>
                       </div>

@@ -4,7 +4,7 @@ import { prisma } from '@/lib/db'
 import { getSession } from '@/lib/session'
 
 export async function POST(request: Request) {
-  const { role, username, password, bankUsername } = await request.json()
+  const { role, username, password } = await request.json()
 
   if (role === 'banker') {
     const banker = await prisma.banker.findUnique({ where: { username } })
@@ -20,15 +20,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, redirect: '/banker' })
   }
 
-  // Kid login — requires bankUsername to scope the lookup
-  if (!bankUsername) return NextResponse.json({ error: 'Bank name is required' }, { status: 400 })
-
-  const banker = await prisma.banker.findUnique({ where: { username: bankUsername } })
-  if (!banker) return NextResponse.json({ error: 'Bank not found' }, { status: 404 })
-
-  const user = await prisma.user.findUnique({
-    where: { username_bankerId: { username, bankerId: banker.id } },
-  })
+  // Kid login — username is globally unique
+  const user = await prisma.user.findUnique({ where: { username } })
   if (!user) return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
 
   const valid = await bcrypt.compare(password, user.passwordHash)
@@ -37,7 +30,7 @@ export async function POST(request: Request) {
   const session = await getSession()
   session.role = 'kid'
   session.userId = user.id
-  session.bankerId = banker.id
+  session.bankerId = user.bankerId
   session.username = user.username
   await session.save()
   return NextResponse.json({ success: true, redirect: '/account' })

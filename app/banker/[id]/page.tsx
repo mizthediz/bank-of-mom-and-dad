@@ -26,6 +26,7 @@ export default async function BankerAccountPage({ params }: { params: { id: stri
       account={{
         id: account.id,
         userId: account.userId,
+        name: account.user.name,
         username: account.user.username,
         colorTheme: account.user.colorTheme,
         currentBalance: account.currentBalance,

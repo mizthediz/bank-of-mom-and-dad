@@ -21,6 +21,7 @@ export default async function BankerPage() {
   const data = accounts.map((a) => ({
     id: a.id,
     userId: a.userId,
+    name: a.user.name,
     username: a.user.username,
     colorTheme: a.user.colorTheme,
     currentBalance: a.currentBalance,

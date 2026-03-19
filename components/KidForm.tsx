@@ -6,13 +6,14 @@ import { useRouter } from 'next/navigation'
 interface KidFormProps {
   mode: 'create' | 'edit'
   accountId?: number
-  initialData?: { username: string }
+  initialData?: { name: string; username: string }
   onSuccess?: () => void
   onCancel: () => void
 }
 
 export default function KidForm({ mode, accountId, initialData, onSuccess, onCancel }: KidFormProps) {
   const router = useRouter()
+  const [name, setName] = useState(initialData?.name ?? '')
   const [username, setUsername] = useState(initialData?.username ?? '')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -22,6 +23,7 @@ export default function KidForm({ mode, accountId, initialData, onSuccess, onCan
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
+    if (!name.trim()) { setError('Name is required.'); return }
     if (!username.trim()) { setError('Username is required.'); return }
     if (mode === 'create' && password.length < 4) { setError('Password must be at least 4 characters.'); return }
     if (mode === 'edit' && password && password.length < 4) { setError('Password must be at least 4 characters.'); return }
@@ -31,12 +33,12 @@ export default function KidForm({ mode, accountId, initialData, onSuccess, onCan
       ? await fetch('/api/accounts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: username.trim(), password }),
+          body: JSON.stringify({ name: name.trim(), username: username.trim(), password }),
         })
       : await fetch(`/api/accounts/${accountId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: username.trim(), password: password || undefined }),
+          body: JSON.stringify({ name: name.trim(), username: username.trim(), password: password || undefined }),
         })
 
     setLoading(false)
@@ -58,6 +60,17 @@ export default function KidForm({ mode, accountId, initialData, onSuccess, onCan
         </h3>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Name</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Alex"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
+              required
+            />
+          </div>
+          <div>
             <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Username</label>
             <input
               type="text"
@@ -67,6 +80,7 @@ export default function KidForm({ mode, accountId, initialData, onSuccess, onCan
               className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
               required
             />
+            <p className="text-xs text-slate-400 mt-1">Used to log in — must be unique</p>
           </div>
           <div>
             <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">

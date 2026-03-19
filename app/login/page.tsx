@@ -1,17 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Suspense } from 'react'
 
 function LoginForm() {
   const router = useRouter()
-  const searchParams = useSearchParams()
 
-  const prefilledBank = searchParams.get('bank') ?? ''
-
-  const [bankUsername, setBankUsername] = useState(prefilledBank)
   const [username, setUsername] = useState('')
   const [kidPassword, setKidPassword] = useState('')
   const [kidError, setKidError] = useState('')
@@ -23,8 +19,6 @@ function LoginForm() {
   const [bankerError, setBankerError] = useState('')
   const [bankerLoading, setBankerLoading] = useState(false)
 
-  const bankIsReadOnly = Boolean(prefilledBank)
-
   async function handleKidLogin(e: React.FormEvent) {
     e.preventDefault()
     setKidError('')
@@ -32,7 +26,7 @@ function LoginForm() {
     const res = await fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password: kidPassword, bankUsername, role: 'kid' }),
+      body: JSON.stringify({ username, password: kidPassword, role: 'kid' }),
     })
     const data = await res.json()
     setKidLoading(false)
@@ -98,31 +92,13 @@ function LoginForm() {
           <form onSubmit={handleKidLogin} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                Bank Name
-              </label>
-              <input
-                type="text"
-                value={bankUsername}
-                onChange={(e) => setBankUsername(e.target.value)}
-                placeholder="e.g. johnson-family"
-                readOnly={bankIsReadOnly}
-                className={`w-full border rounded-xl px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent ${
-                  bankIsReadOnly
-                    ? 'bg-slate-100 border-slate-200 text-slate-500 cursor-not-allowed'
-                    : 'bg-slate-50 border-slate-200'
-                }`}
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                Your Name
+                Username
               </label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="e.g. Alex"
+                placeholder="your-username"
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
                 required
               />
@@ -155,7 +131,7 @@ function LoginForm() {
           </form>
 
           <p className="text-center text-slate-400 text-xs mt-5">
-            Ask your banker for your Bank Name.
+            Ask your banker for your username.
           </p>
         </div>
       </div>

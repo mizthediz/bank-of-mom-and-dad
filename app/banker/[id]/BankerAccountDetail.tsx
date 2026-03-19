@@ -22,6 +22,7 @@ interface Transaction {
 interface Account {
   id: number
   userId: number
+  name: string
   username: string
   colorTheme: string
   currentBalance: number
@@ -160,14 +161,15 @@ export default function BankerAccountDetail({ account: initialAccount, annualInt
               style={{ backgroundColor: theme.dark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)' }}
             >
               <span className={theme.dark ? 'text-white' : 'text-slate-800'}>
-                {account.username.charAt(0).toUpperCase()}
+                {account.name.charAt(0).toUpperCase()}
               </span>
             </div>
             <div>
               <p className={`text-xs font-bold uppercase tracking-widest ${theme.dark ? 'text-white/50' : 'text-black/30'}`}>Account</p>
-              <h1 className={`text-2xl font-black capitalize ${theme.dark ? 'text-white' : 'text-slate-900'}`}>
-                {account.username}
+              <h1 className={`text-2xl font-black ${theme.dark ? 'text-white' : 'text-slate-900'}`}>
+                {account.name}
               </h1>
+              <p className={`text-xs font-medium ${theme.dark ? 'text-white/40' : 'text-black/30'}`}>@{account.username}</p>
             </div>
           </div>
 
@@ -351,15 +353,15 @@ export default function BankerAccountDetail({ account: initialAccount, annualInt
         <KidForm
           mode="edit"
           accountId={account.id}
-          initialData={{ username: account.username }}
+          initialData={{ name: account.name, username: account.username }}
           onSuccess={() => refreshAccount()}
           onCancel={() => setShowEditKid(false)}
         />
       )}
       {showDeleteKid && (
         <ConfirmDialog
-          title={`Delete ${account.username}'s account`}
-          message={`This will permanently delete ${account.username}'s account and all their transaction history. This cannot be undone.`}
+          title={`Delete ${account.name}'s account`}
+          message={`This will permanently delete ${account.name}'s account and all their transaction history. This cannot be undone.`}
           onConfirm={handleDeleteKid}
           onCancel={() => setShowDeleteKid(false)}
           confirmLabel="Delete Account"

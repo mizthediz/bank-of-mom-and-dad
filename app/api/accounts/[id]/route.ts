@@ -29,6 +29,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
   if (!account) return NextResponse.json({ error: 'Not found' }, { status: 404 })
   return NextResponse.json({
     ...account,
+    name: account.user.name,
     username: account.user.username,
     colorTheme: account.user.colorTheme,
   })
@@ -43,8 +44,9 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   const account = await getOwnedAccount(accountId, session.bankerId)
   if (!account) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-  const { username, colorTheme, password } = await request.json()
+  const { name, username, colorTheme, password } = await request.json()
   const updateData: Record<string, string> = {}
+  if (name) updateData.name = name
   if (username) updateData.username = username
   if (colorTheme) updateData.colorTheme = colorTheme
   if (password) updateData.passwordHash = await bcrypt.hash(password, 10)

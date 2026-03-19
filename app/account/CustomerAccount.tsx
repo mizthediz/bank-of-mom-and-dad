@@ -18,6 +18,7 @@ interface Transaction {
 
 interface Account {
   id: number
+  name: string
   username: string
   colorTheme: string
   currentBalance: number
@@ -97,7 +98,7 @@ export default function CustomerAccount({ account: initialAccount, tip }: { acco
         {/* Balance */}
         <div className="max-w-lg mx-auto">
           <p className={`text-sm font-semibold mb-1 ${theme.dark ? 'text-white/60' : 'text-black/40'}`}>
-            Hi, {account.username}! 👋
+            Hi, {account.name}! 👋
           </p>
           <p className={`text-xs font-bold uppercase tracking-widest mb-2 ${theme.dark ? 'text-white/50' : 'text-black/30'}`}>
             Your Balance

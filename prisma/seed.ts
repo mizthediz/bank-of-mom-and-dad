@@ -24,10 +24,11 @@ async function main() {
   // ── Alex ────────────────────────────────────────────────────────────────────
   const alexHash = await bcrypt.hash('alex123', 10)
   const alex = await prisma.user.upsert({
-    where: { username_bankerId: { username: 'alex', bankerId: banker.id } },
+    where: { username: 'alex' },
     update: {},
     create: {
       username: 'alex',
+      name: 'Alex',
       passwordHash: alexHash,
       colorTheme: 'sky',
       bankerId: banker.id,
@@ -57,10 +58,11 @@ async function main() {
   // ── Sam ─────────────────────────────────────────────────────────────────────
   const samHash = await bcrypt.hash('sam123', 10)
   const sam = await prisma.user.upsert({
-    where: { username_bankerId: { username: 'sam', bankerId: banker.id } },
+    where: { username: 'sam' },
     update: {},
     create: {
       username: 'sam',
+      name: 'Sam',
       passwordHash: samHash,
       colorTheme: 'rose',
       bankerId: banker.id,
@@ -89,10 +91,11 @@ async function main() {
   // ── Riley ───────────────────────────────────────────────────────────────────
   const rileyHash = await bcrypt.hash('riley123', 10)
   const riley = await prisma.user.upsert({
-    where: { username_bankerId: { username: 'riley', bankerId: banker.id } },
+    where: { username: 'riley' },
     update: {},
     create: {
       username: 'riley',
+      name: 'Riley',
       passwordHash: rileyHash,
       colorTheme: 'emerald',
       bankerId: banker.id,

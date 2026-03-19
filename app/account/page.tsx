@@ -26,6 +26,7 @@ export default async function AccountPage() {
     <CustomerAccount
       account={{
         id: user.account.id,
+        name: user.name,
         username: user.username,
         colorTheme: user.colorTheme,
         currentBalance: user.account.currentBalance,

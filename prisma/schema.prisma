@@ -26,15 +26,14 @@ model BankerSettings {
 
 model User {
   id           Int      @id @default(autoincrement())
-  username     String
+  username     String   @unique
+  name         String
   passwordHash String
   colorTheme   String   @default("sky")
   bankerId     Int
   banker       Banker   @relation(fields: [bankerId], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
   account      Account?
-
-  @@unique([username, bankerId])
 }
 
 model Account {
