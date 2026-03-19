@@ -198,7 +198,11 @@ export default function HowItWorksPage() {
               Bank of Mom &amp; Dad is a simple, fun banking app that lets parents manage their kids&apos;
               savings accounts, track transactions, and automatically earn interest.
             </p>
-            <div className="mt-8 flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4">
+            <div className="mt-4 inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-2">
+              <span className="text-lg">🐷</span>
+              <p className="text-indigo-100 text-xs font-bold">A digital piggy bank — no real money is transferred</p>
+            </div>
+            <div className="mt-6 flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4">
               <Link href="/signup" className="bg-white text-indigo-700 font-black rounded-2xl px-8 py-4 shadow-lg hover:shadow-xl transition-shadow w-full sm:w-auto text-center">
                 Create Your Bank →
               </Link>
@@ -229,9 +233,9 @@ export default function HowItWorksPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
               <div className="text-4xl mb-4">💰</div>
-              <h3 className="text-lg font-black text-slate-800 mb-2">Real savings, real lessons</h3>
+              <h3 className="text-lg font-black text-slate-800 mb-2">Real lessons, digital ledger</h3>
               <p className="text-slate-500 text-sm leading-relaxed">
-                Set up individual accounts for each kid. Track every deposit, withdrawal, and balance change in one place.
+                This is a tracking tool, not a real bank. You record what you owe and what kids spend — the actual cash stays in your hands.
               </p>
             </div>
             <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
@@ -248,6 +252,21 @@ export default function HowItWorksPage() {
                 Each kid picks their own color theme. Logging in feels personal, not like a chore.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Trust Callout ── */}
+      <section className="py-10 px-6 bg-amber-50 border-y border-amber-100">
+        <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
+          <span className="text-5xl flex-shrink-0">🐷</span>
+          <div>
+            <h3 className="text-base font-black text-slate-800 mb-1">Just a digital piggy bank — no real money involved</h3>
+            <p className="text-slate-500 text-sm leading-relaxed">
+              Bank of Mom &amp; Dad is a <strong className="text-slate-700">record-keeping tool</strong>, not a financial institution.
+              No money is deposited, held, or transferred through this app. You track what you give your kids and what they spend —
+              the actual cash always stays with you. Think of it like a shared notebook, but way more fun.
+            </p>
           </div>
         </div>
       </section>
