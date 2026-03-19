@@ -5,11 +5,11 @@ import Link from 'next/link'
 // ─────────────────────────────────────────────
 function PhoneFrame({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={`relative w-[200px] bg-slate-900 rounded-[2.8rem] p-[6px] shadow-2xl ${className}`}>
+    <div className={`relative w-[200px] h-[420px] bg-slate-900 rounded-[2.8rem] p-[6px] shadow-2xl ${className}`}>
       {/* Speaker notch */}
       <div className="absolute top-[13px] left-1/2 -translate-x-1/2 w-14 h-[5px] bg-slate-700 rounded-full z-10" />
       {/* Screen */}
-      <div className="w-full bg-white rounded-[2.4rem] overflow-hidden">
+      <div className="w-full h-full bg-white rounded-[2.4rem] overflow-hidden">
         {children}
       </div>
     </div>
