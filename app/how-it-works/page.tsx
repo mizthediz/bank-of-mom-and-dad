@@ -174,9 +174,6 @@ export default function HowItWorksPage() {
             🏦 Bank of Mom &amp; Dad
           </Link>
           <div className="flex items-center gap-3 sm:gap-4">
-            <span className="hidden sm:inline text-sm font-black text-slate-400 uppercase tracking-widest">
-              How It Works
-            </span>
             <Link href="/login" className="text-sm font-black text-indigo-700 border-2 border-indigo-200 rounded-xl px-4 py-2 hover:border-indigo-400 transition-colors">
               Log In
             </Link>
