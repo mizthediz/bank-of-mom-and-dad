@@ -136,7 +136,7 @@ export default function BankerDashboard({ accounts, annualInterestRate, bankName
             </button>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {accounts.map((account) => {
               const theme = getTheme(account.colorTheme)
               const lastDate = account.lastTransactionDate
