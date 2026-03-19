@@ -174,10 +174,10 @@ export default function HowItWorksPage() {
             🏦 Bank of Mom &amp; Dad
           </Link>
           <div className="flex items-center gap-3 sm:gap-4">
-            <Link href="/login" className="text-sm font-black text-indigo-700 border-2 border-indigo-200 rounded-xl px-4 py-2 hover:border-indigo-400 transition-colors">
+            <Link href="/login" className="text-xs sm:text-sm font-black text-indigo-700 border-2 border-indigo-200 rounded-xl px-3 py-1.5 sm:px-4 sm:py-2 hover:border-indigo-400 transition-colors">
               Log In
             </Link>
-            <Link href="/signup" className="text-sm font-black text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl px-4 py-2 transition-colors shadow">
+            <Link href="/signup" className="text-xs sm:text-sm font-black text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl px-3 py-1.5 sm:px-4 sm:py-2 transition-colors shadow">
               Sign Up
             </Link>
           </div>
