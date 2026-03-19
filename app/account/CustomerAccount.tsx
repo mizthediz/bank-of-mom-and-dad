@@ -69,7 +69,7 @@ export default function CustomerAccount({ account: initialAccount, tip }: { acco
     <div className="min-h-screen bg-slate-50">
 
       {/* Colored hero header */}
-      <div className="relative px-5 pt-5 pb-16" style={{ backgroundColor: theme.hex }}>
+      <div className="relative z-0 px-5 pt-5 pb-16" style={{ backgroundColor: theme.hex }}>
         {/* Top bar */}
         <div className="max-w-lg mx-auto flex items-center justify-between mb-8">
           <div className={`text-sm font-bold tracking-widest uppercase ${theme.dark ? 'text-white/60' : 'text-black/40'}`}>
