@@ -67,13 +67,9 @@ export default function LoginPage() {
       <button
         onClick={() => setVaultOpen(true)}
         title="Banker login"
-        className="absolute top-5 right-5 text-gray-300 hover:text-gray-500 transition-colors"
+        className="absolute top-5 right-5 text-2xl opacity-30 hover:opacity-60 transition-opacity"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 10.5V19a1 1 0 001 1h16a1 1 0 001-1v-8.5M3 10.5L12 4l9 6.5M3 10.5h18" />
-          <circle cx="12" cy="14" r="2.5" strokeLinecap="round" strokeLinejoin="round" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 11.5V10M12 18v-1.5M15 14h1.5M7.5 14H9" />
-        </svg>
+        🔐
       </button>
 
       {/* Kids login */}
