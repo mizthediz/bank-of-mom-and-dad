@@ -16,10 +16,23 @@ export async function GET(request: Request, { params }: { params: { id: string }
   const session = await getSession()
   const accountId = parseInt(params.id)
 
-  const account = await prisma.account.findUnique({ where: { id: accountId } })
+  const account = await prisma.account.findUnique({
+    where: { id: accountId },
+    include: { user: true },
+  })
   if (!account) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-  if (session.role === 'customer' && account.userId !== session.userId) {
+  // Kids can only view their own account's transactions
+  if (session.role === 'kid') {
+    if (account.userId !== session.userId || account.user.bankerId !== session.bankerId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+  } else if (session.role === 'banker') {
+    // Bankers can only view accounts belonging to their bank
+    if (account.user.bankerId !== session.bankerId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+  } else {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -33,13 +46,21 @@ export async function GET(request: Request, { params }: { params: { id: string }
 
 export async function POST(request: Request, { params }: { params: { id: string } }) {
   const session = await getSession()
-  if (session.role !== 'admin') {
+  if (session.role !== 'banker' || !session.bankerId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const accountId = parseInt(params.id)
-  const account = await prisma.account.findUnique({ where: { id: accountId } })
+  const account = await prisma.account.findUnique({
+    where: { id: accountId },
+    include: { user: true },
+  })
   if (!account) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+
+  // Ownership check — banker can only post to their own bank's accounts
+  if (account.user.bankerId !== session.bankerId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
 
   const { date, type, amount, description } = await request.json()
 

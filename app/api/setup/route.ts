@@ -1,30 +1,15 @@
 import { NextResponse } from 'next/server'
-import bcrypt from 'bcryptjs'
-import { prisma } from '@/lib/db'
+
+// The single-admin setup flow has been replaced by the multi-banker signup system.
+// Bankers now create their accounts at /signup.
 
 export async function GET() {
-  const settings = await prisma.settings.findUnique({ where: { id: 1 } })
-  const setupRequired = !settings || !settings.adminPasswordHash
-  return NextResponse.json({ setupRequired })
+  return NextResponse.json({ setupRequired: false, message: 'Use /signup to create a banker account.' })
 }
 
-export async function POST(request: Request) {
-  const settings = await prisma.settings.findUnique({ where: { id: 1 } })
-  if (settings?.adminPasswordHash) {
-    return NextResponse.json({ error: 'Setup already complete' }, { status: 400 })
-  }
-
-  const { password } = await request.json()
-  if (!password || password.length < 4) {
-    return NextResponse.json({ error: 'Password must be at least 4 characters' }, { status: 400 })
-  }
-
-  const hash = await bcrypt.hash(password, 10)
-  await prisma.settings.upsert({
-    where: { id: 1 },
-    update: { adminPasswordHash: hash },
-    create: { id: 1, adminPasswordHash: hash },
-  })
-
-  return NextResponse.json({ success: true })
+export async function POST() {
+  return NextResponse.json(
+    { error: 'Setup is no longer required. Use /signup to create a banker account.' },
+    { status: 410 }
+  )
 }

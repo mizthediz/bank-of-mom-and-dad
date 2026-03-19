@@ -12,14 +12,27 @@ async function recalcBalance(accountId: number) {
   return newBalance
 }
 
+async function getOwnedAccount(accountId: number, bankerId: number) {
+  const account = await prisma.account.findUnique({
+    where: { id: accountId },
+    include: { user: true },
+  })
+  if (!account || account.user.bankerId !== bankerId) return null
+  return account
+}
+
 export async function PUT(request: Request, { params }: { params: { id: string; txId: string } }) {
   const session = await getSession()
-  if (session.role !== 'admin') {
+  if (session.role !== 'banker' || !session.bankerId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const accountId = parseInt(params.id)
   const txId = parseInt(params.txId)
+
+  const account = await getOwnedAccount(accountId, session.bankerId)
+  if (!account) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+
   const { date, type, amount, description } = await request.json()
 
   const signedAmount = type === 'debit' ? -Math.abs(parseFloat(amount)) : Math.abs(parseFloat(amount))
@@ -40,12 +53,15 @@ export async function PUT(request: Request, { params }: { params: { id: string; 
 
 export async function DELETE(_req: Request, { params }: { params: { id: string; txId: string } }) {
   const session = await getSession()
-  if (session.role !== 'admin') {
+  if (session.role !== 'banker' || !session.bankerId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const accountId = parseInt(params.id)
   const txId = parseInt(params.txId)
+
+  const account = await getOwnedAccount(accountId, session.bankerId)
+  if (!account) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
   await prisma.transaction.delete({ where: { id: txId } })
   const newBalance = await recalcBalance(accountId)

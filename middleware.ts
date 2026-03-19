@@ -5,13 +5,13 @@ import { sessionOptions, SessionData } from '@/lib/session'
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Always allow setup and login
-  if (pathname === '/login' || pathname === '/setup') {
+  // Always allow login, signup, and superadmin pages
+  if (pathname === '/login' || pathname === '/signup' || pathname === '/superadmin') {
     return NextResponse.next()
   }
 
-  // Allow auth API routes
-  if (pathname.startsWith('/api/auth') || pathname === '/api/setup') {
+  // Allow auth and signup API routes
+  if (pathname.startsWith('/api/auth') || pathname === '/api/signup' || pathname === '/api/superadmin') {
     return NextResponse.next()
   }
 
@@ -23,12 +23,12 @@ export async function middleware(request: NextRequest) {
   }
 
   // Banker-only routes
-  if (pathname.startsWith('/banker') && session.role !== 'admin') {
+  if (pathname.startsWith('/banker') && session.role !== 'banker') {
     return NextResponse.redirect(new URL('/account', request.url))
   }
 
-  // Customer-only routes
-  if (pathname.startsWith('/account') && session.role !== 'customer') {
+  // Kid-only routes
+  if (pathname.startsWith('/account') && session.role !== 'kid') {
     return NextResponse.redirect(new URL('/banker', request.url))
   }
 

@@ -19,9 +19,10 @@ interface Account {
 interface Props {
   accounts: Account[]
   annualInterestRate: number
+  bankName: string
 }
 
-export default function BankerDashboard({ accounts, annualInterestRate }: Props) {
+export default function BankerDashboard({ accounts, annualInterestRate, bankName }: Props) {
   const router = useRouter()
   const [showAddKid, setShowAddKid] = useState(false)
   const [rate, setRate] = useState(annualInterestRate)
@@ -57,7 +58,7 @@ export default function BankerDashboard({ accounts, annualInterestRate }: Props)
           <div className="flex items-start justify-between mb-8">
             <div>
               <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-1">Banker View</p>
-              <h1 className="text-2xl font-black text-white tracking-tight">🏦 Bank of Mom & Dad</h1>
+              <h1 className="text-2xl font-black text-white tracking-tight">🏦 {bankName}</h1>
             </div>
             <button
               onClick={handleLogout}

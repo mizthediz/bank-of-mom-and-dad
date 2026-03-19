@@ -2,9 +2,11 @@ import { getIronSession, SessionOptions } from 'iron-session'
 import { cookies } from 'next/headers'
 
 export interface SessionData {
+  role?: 'banker' | 'kid' | 'superadmin'
+  bankerId?: number
   userId?: number
-  role?: 'admin' | 'customer'
   username?: string
+  bankName?: string
 }
 
 export const sessionOptions: SessionOptions = {

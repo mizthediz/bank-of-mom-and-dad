@@ -6,7 +6,7 @@ import CustomerAccount from './CustomerAccount'
 
 export default async function AccountPage() {
   const session = await getSession()
-  if (session.role !== 'customer' || !session.userId) redirect('/login')
+  if (session.role !== 'kid' || !session.userId || !session.bankerId) redirect('/login')
 
   const user = await prisma.user.findUnique({
     where: { id: session.userId },
@@ -17,7 +17,8 @@ export default async function AccountPage() {
     },
   })
 
-  if (!user?.account) redirect('/login')
+  // Ensure the user belongs to the banker in session (safety check)
+  if (!user?.account || user.bankerId !== session.bankerId) redirect('/login')
 
   const tip = getRandomTip()
 

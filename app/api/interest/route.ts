@@ -5,7 +5,7 @@ import { calculateMonthlyInterest } from '@/lib/interest'
 
 export async function POST(request: Request) {
   const session = await getSession()
-  if (session.role !== 'admin') {
+  if (session.role !== 'banker' || !session.bankerId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -13,14 +13,18 @@ export async function POST(request: Request) {
   const y = parseInt(year)
   const m = parseInt(month)
 
-  const settings = await prisma.settings.findUnique({ where: { id: 1 } })
+  const settings = await prisma.bankerSettings.findUnique({ where: { bankerId: session.bankerId } })
   const annualRate = settings?.annualInterestRate ?? 0.05
 
   // Get the closing balance for each account as of the end of the prior month
   // i.e., all transactions up to the last moment of month (m-1) in year y
   const priorMonthEnd = new Date(y, m - 1, 0, 23, 59, 59, 999) // last day of prior month
 
-  const accounts = await prisma.account.findMany({ include: { user: true } })
+  // Scope to this banker's accounts only
+  const accounts = await prisma.account.findMany({
+    where: { user: { bankerId: session.bankerId } },
+    include: { user: true },
+  })
 
   const results: { username: string; applied: boolean; amount?: number; reason?: string }[] = []
 

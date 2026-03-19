@@ -5,7 +5,7 @@ import BankerAccountDetail from './BankerAccountDetail'
 
 export default async function BankerAccountPage({ params }: { params: { id: string } }) {
   const session = await getSession()
-  if (session.role !== 'admin') redirect('/login')
+  if (session.role !== 'banker' || !session.bankerId) redirect('/login')
 
   const accountId = parseInt(params.id)
   const account = await prisma.account.findUnique({
@@ -16,9 +16,10 @@ export default async function BankerAccountPage({ params }: { params: { id: stri
     },
   })
 
-  if (!account) redirect('/banker')
+  // Ensure the account belongs to this banker
+  if (!account || account.user.bankerId !== session.bankerId) redirect('/banker')
 
-  const settings = await prisma.settings.findUnique({ where: { id: 1 } })
+  const settings = await prisma.bankerSettings.findUnique({ where: { bankerId: session.bankerId } })
 
   return (
     <BankerAccountDetail

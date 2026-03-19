@@ -7,19 +7,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Settings {
-  id                 Int    @id @default(1)
+model Banker {
+  id           Int             @id @default(autoincrement())
+  username     String          @unique
+  passwordHash String
+  bankName     String
+  createdAt    DateTime        @default(now())
+  users        User[]
+  settings     BankerSettings?
+}
+
+model BankerSettings {
+  id                 Int    @id @default(autoincrement())
+  bankerId           Int    @unique
+  banker             Banker @relation(fields: [bankerId], references: [id], onDelete: Cascade)
   annualInterestRate Float  @default(0.0500)
-  adminPasswordHash  String @default("")
 }
 
 model User {
   id           Int      @id @default(autoincrement())
-  username     String   @unique
+  username     String
   passwordHash String
   colorTheme   String   @default("sky")
+  bankerId     Int
+  banker       Banker   @relation(fields: [bankerId], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
   account      Account?
+
+  @@unique([username, bankerId])
 }
 
 model Account {
