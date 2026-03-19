@@ -11,20 +11,20 @@ interface ConfirmDialogProps {
 
 export default function ConfirmDialog({ title, message, onConfirm, onCancel, confirmLabel = 'Confirm', danger = false }: ConfirmDialogProps) {
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
-        <h3 className="text-lg font-bold text-gray-800 mb-2">{title}</h3>
-        <p className="text-gray-600 text-sm mb-6">{message}</p>
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-7">
+        <h3 className="text-lg font-black text-slate-800 mb-2">{title}</h3>
+        <p className="text-slate-500 text-sm leading-relaxed mb-6">{message}</p>
         <div className="flex gap-3">
           <button
             onClick={onCancel}
-            className="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-semibold hover:bg-gray-50 transition-colors"
+            className="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 font-black hover:bg-slate-50"
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
-            className={`flex-1 py-2.5 rounded-xl font-bold text-white transition-colors ${danger ? 'bg-red-500 hover:bg-red-600' : 'bg-sky-400 hover:bg-sky-500'}`}
+            className={`flex-1 py-3 rounded-xl font-black text-white ${danger ? 'bg-rose-500 hover:bg-rose-600' : 'bg-indigo-600 hover:bg-indigo-700'}`}
           >
             {confirmLabel}
           </button>

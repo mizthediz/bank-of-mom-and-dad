@@ -59,10 +59,7 @@ export default function BankerAccountDetail({ account: initialAccount, annualInt
 
   async function refreshAccount() {
     const res = await fetch(`/api/accounts/${account.id}`)
-    if (res.ok) {
-      const data = await res.json()
-      setAccount(data)
-    }
+    if (res.ok) setAccount(await res.json())
   }
 
   async function handleDeleteTx() {
@@ -112,11 +109,9 @@ export default function BankerAccountDetail({ account: initialAccount, annualInt
     setLoading(false)
     const result = data.results?.find((r: { username: string }) => r.username === account.username)
     if (result) {
-      if (result.applied) {
-        setInterestResult(`✅ Interest of $${result.amount?.toFixed(2)} applied!`)
-      } else {
-        setInterestResult(`ℹ️ ${result.reason}`)
-      }
+      setInterestResult(result.applied
+        ? `✅ Interest of $${result.amount?.toFixed(2)} applied!`
+        : `ℹ️ ${result.reason}`)
     }
     refreshAccount()
   }
@@ -128,83 +123,108 @@ export default function BankerAccountDetail({ account: initialAccount, annualInt
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="text-white px-4 pt-6 pb-8" style={{ backgroundColor: theme.hex }}>
+    <div className="min-h-screen bg-slate-50">
+
+      {/* Colored header */}
+      <div className="px-5 pt-5 pb-16 relative" style={{ backgroundColor: theme.hex }}>
         <div className="max-w-2xl mx-auto">
-          <div className="flex items-center gap-3 mb-4">
-            <Link href="/banker" className="text-white/70 hover:text-white text-sm">
-              ← Back
+          <div className="flex items-center justify-between mb-6">
+            <Link
+              href="/banker"
+              className={`flex items-center gap-1.5 text-sm font-bold ${theme.dark ? 'text-white/60 hover:text-white/90' : 'text-black/40 hover:text-black/70'}`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+              All Kids
             </Link>
-          </div>
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className={`text-2xl font-bold ${theme.dark ? 'text-white' : 'text-gray-800'}`}>
-                {account.username}
-              </h1>
-              <p className={`text-sm mt-1 ${theme.dark ? 'text-white/70' : 'text-gray-600'}`}>Account Balance</p>
-              <BalanceDisplay
-                amount={account.currentBalance}
-                size="xl"
-                className={theme.dark ? 'text-white' : 'text-gray-800'}
-              />
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowEditKid(true)}
+                className={`text-xs font-bold px-3 py-1.5 rounded-xl ${theme.dark ? 'text-white/60 hover:text-white/90 hover:bg-white/10' : 'text-black/40 hover:text-black/70 hover:bg-black/10'}`}
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => setShowDeleteKid(true)}
+                className={`text-xs font-bold px-3 py-1.5 rounded-xl ${theme.dark ? 'text-rose-300/70 hover:text-rose-200 hover:bg-white/10' : 'text-rose-500/60 hover:text-rose-600 hover:bg-black/10'}`}
+              >
+                Delete
+              </button>
             </div>
           </div>
+
+          <div className="flex items-center gap-3 mb-2">
+            <div
+              className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-black"
+              style={{ backgroundColor: theme.dark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)' }}
+            >
+              <span className={theme.dark ? 'text-white' : 'text-slate-800'}>
+                {account.username.charAt(0).toUpperCase()}
+              </span>
+            </div>
+            <div>
+              <p className={`text-xs font-bold uppercase tracking-widest ${theme.dark ? 'text-white/50' : 'text-black/30'}`}>Account</p>
+              <h1 className={`text-2xl font-black capitalize ${theme.dark ? 'text-white' : 'text-slate-900'}`}>
+                {account.username}
+              </h1>
+            </div>
+          </div>
+
+          <p className={`text-xs font-bold uppercase tracking-widest mb-1 ${theme.dark ? 'text-white/50' : 'text-black/30'}`}>Balance</p>
+          <BalanceDisplay
+            amount={account.currentBalance}
+            size="xl"
+            className={theme.dark ? '!text-white' : '!text-slate-900'}
+          />
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 -mt-4">
+      <div className="max-w-2xl mx-auto px-4 -mt-6 pb-12">
+
         {/* Action Buttons */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-4">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 mb-4">
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={() => setShowAddTx(true)}
-              className="py-2.5 rounded-xl bg-sky-400 hover:bg-sky-500 text-white font-bold text-sm transition-colors"
+              className="py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-sm shadow-sm"
             >
               + Add Transaction
             </button>
             <button
               onClick={() => { setOverrideValue(account.currentBalance.toFixed(2)); setShowOverride(true) }}
-              className="py-2.5 rounded-xl border border-gray-200 text-gray-700 font-semibold text-sm hover:bg-gray-50 transition-colors"
+              className="py-3 rounded-xl border border-slate-200 text-slate-700 font-black text-sm hover:bg-slate-50"
             >
               Set Balance
-            </button>
-            <button
-              onClick={() => setShowEditKid(true)}
-              className="py-2.5 rounded-xl border border-gray-200 text-gray-700 font-semibold text-sm hover:bg-gray-50 transition-colors"
-            >
-              ✏️ Edit Kid
-            </button>
-            <button
-              onClick={() => setShowDeleteKid(true)}
-              className="py-2.5 rounded-xl border border-red-100 text-red-500 font-semibold text-sm hover:bg-red-50 transition-colors"
-            >
-              🗑️ Delete Kid
             </button>
           </div>
         </div>
 
         {/* Interest Panel */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-4">
-          <div className="flex items-center justify-between mb-3">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 mb-4">
+          <div className="flex items-center justify-between">
             <div>
-              <p className="font-bold text-gray-700">Interest Rate</p>
-              <p className="text-2xl font-bold text-emerald-500">{(rate * 100).toFixed(1)}% / yr</p>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Interest Rate</p>
+              <p className="text-2xl font-black text-emerald-500">{(rate * 100).toFixed(1)}% / yr</p>
             </div>
             <button
               onClick={() => setShowInterest(!showInterest)}
-              className="text-sm text-sky-500 hover:text-sky-600 font-semibold"
+              className={`text-sm font-black px-4 py-2 rounded-xl transition-colors ${
+                showInterest
+                  ? 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'
+              }`}
             >
               {showInterest ? 'Hide' : 'Apply Interest'}
             </button>
           </div>
 
           {showInterest && (
-            <div className="border-t border-gray-50 pt-3 space-y-3">
+            <div className="border-t border-slate-50 mt-4 pt-4 space-y-3">
               {!editingRate ? (
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">Edit global rate:</span>
-                  <button onClick={() => setEditingRate(true)} className="text-sm text-sky-500 font-semibold">
+                  <span className="text-sm text-slate-500">Global interest rate</span>
+                  <button onClick={() => setEditingRate(true)} className="text-sm text-indigo-600 font-black hover:text-indigo-700">
                     Change Rate
                   </button>
                 </div>
@@ -218,12 +238,12 @@ export default function BankerAccountDetail({ account: initialAccount, annualInt
                       min="0"
                       max="100"
                       step="0.1"
-                      className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-300 pr-8"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 pr-8 text-slate-800"
                     />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">%</span>
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-bold">%</span>
                   </div>
-                  <button type="submit" className="bg-sky-400 text-white px-3 py-2 rounded-xl text-sm font-bold">Save</button>
-                  <button type="button" onClick={() => setEditingRate(false)} className="border border-gray-200 px-3 py-2 rounded-xl text-sm">Cancel</button>
+                  <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded-xl text-sm font-black hover:bg-indigo-700">Save</button>
+                  <button type="button" onClick={() => setEditingRate(false)} className="border border-slate-200 px-3 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50">✕</button>
                 </form>
               )}
 
@@ -232,30 +252,34 @@ export default function BankerAccountDetail({ account: initialAccount, annualInt
                   type="month"
                   value={interestMonth}
                   onChange={(e) => setInterestMonth(e.target.value)}
-                  className="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-300"
+                  className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 text-slate-800"
                 />
                 <button
                   onClick={handleApplyInterest}
                   disabled={loading}
-                  className="bg-emerald-400 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl text-sm transition-colors disabled:opacity-50"
+                  className="bg-emerald-500 hover:bg-emerald-600 text-white font-black px-5 py-2 rounded-xl text-sm disabled:opacity-50"
                 >
-                  {loading ? '...' : 'Apply'}
+                  {loading ? '…' : 'Apply'}
                 </button>
               </div>
+
               {interestResult && (
-                <p className="text-sm text-gray-600 bg-gray-50 rounded-xl px-3 py-2">{interestResult}</p>
+                <p className="text-sm text-slate-700 bg-slate-50 rounded-xl px-4 py-3 font-medium">{interestResult}</p>
               )}
             </div>
           )}
         </div>
 
         {/* Transactions */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-8">
-          <h2 className="font-bold text-gray-700 mb-3">All Transactions</h2>
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 mb-8">
+          <h2 className="font-black text-slate-800 mb-4">All Transactions</h2>
           {account.transactions.length === 0 ? (
-            <p className="text-gray-400 text-sm text-center py-6">No transactions yet.</p>
+            <div className="text-center py-10">
+              <p className="text-4xl mb-2">🌱</p>
+              <p className="text-slate-400 text-sm font-semibold">No transactions yet.</p>
+            </div>
           ) : (
-            <div>
+            <div className="divide-y divide-slate-50">
               {account.transactions.map((tx) => (
                 <TransactionRow
                   key={tx.id}
@@ -277,7 +301,6 @@ export default function BankerAccountDetail({ account: initialAccount, annualInt
           onCancel={() => setShowAddTx(false)}
         />
       )}
-
       {editTx && (
         <TransactionForm
           accountId={account.id}
@@ -286,7 +309,6 @@ export default function BankerAccountDetail({ account: initialAccount, annualInt
           onCancel={() => setEditTx(null)}
         />
       )}
-
       {deleteTxId && (
         <ConfirmDialog
           title="Delete Transaction"
@@ -297,36 +319,34 @@ export default function BankerAccountDetail({ account: initialAccount, annualInt
           danger
         />
       )}
-
       {showOverride && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
-            <h3 className="text-lg font-bold text-gray-800 mb-2">Set Balance</h3>
-            <p className="text-sm text-gray-500 mb-4">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-7">
+            <h3 className="text-lg font-black text-slate-800 mb-1">Set Balance</h3>
+            <p className="text-sm text-slate-400 mb-5">
               Enter the new balance. A transaction will be created to record the change.
             </p>
             <form onSubmit={handleOverride} className="space-y-4">
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">$</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-black text-lg">$</span>
                 <input
                   type="number"
                   value={overrideValue}
                   onChange={(e) => setOverrideValue(e.target.value)}
                   step="0.01"
-                  className="w-full border border-gray-200 rounded-xl pl-8 pr-4 py-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-300"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-3 text-slate-800 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-indigo-400"
                 />
               </div>
               <div className="flex gap-3">
-                <button type="button" onClick={() => setShowOverride(false)} className="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-semibold">Cancel</button>
-                <button type="submit" disabled={loading} className="flex-1 py-2.5 rounded-xl bg-sky-400 text-white font-bold disabled:opacity-50">
-                  {loading ? 'Saving...' : 'Set Balance'}
+                <button type="button" onClick={() => setShowOverride(false)} className="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 font-black hover:bg-slate-50">Cancel</button>
+                <button type="submit" disabled={loading} className="flex-1 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black disabled:opacity-50">
+                  {loading ? 'Saving…' : 'Set Balance'}
                 </button>
               </div>
             </form>
           </div>
         </div>
       )}
-
       {showEditKid && (
         <KidForm
           mode="edit"
@@ -336,7 +356,6 @@ export default function BankerAccountDetail({ account: initialAccount, annualInt
           onCancel={() => setShowEditKid(false)}
         />
       )}
-
       {showDeleteKid && (
         <ConfirmDialog
           title={`Delete ${account.username}'s account`}

@@ -25,19 +25,30 @@ export default function ThemePicker({ accountId, currentTheme, onThemeChange }: 
 
   return (
     <div>
-      <p className="text-sm font-semibold text-gray-600 mb-3">Pick your color:</p>
-      <div className="flex flex-wrap gap-3">
+      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Pick your color</p>
+      <div className="grid grid-cols-4 gap-3">
         {(Object.entries(THEMES) as [ThemeKey, typeof THEMES[ThemeKey]][]).map(([key, theme]) => (
           <button
             key={key}
             onClick={() => handleSelect(key)}
             disabled={saving}
             title={theme.name}
-            className={`w-10 h-10 rounded-full border-4 transition-transform hover:scale-110 disabled:opacity-50 ${currentTheme === key ? 'border-gray-800 scale-110' : 'border-transparent'}`}
+            className={`relative w-full aspect-square rounded-2xl disabled:opacity-50 hover:scale-105 transition-transform`}
             style={{ backgroundColor: theme.hex }}
-          />
+          >
+            {currentTheme === key && (
+              <span className="absolute inset-0 flex items-center justify-center">
+                <svg className="w-5 h-5 text-white drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              </span>
+            )}
+          </button>
         ))}
       </div>
+      <p className="text-xs text-slate-400 text-center mt-3 font-medium">
+        {THEMES[currentTheme as ThemeKey]?.name ?? 'Sky Blue'}
+      </p>
     </div>
   )
 }
