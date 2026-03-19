@@ -76,7 +76,7 @@ export default function KidForm({ mode, accountId, initialData, onSuccess, onCan
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="e.g. emma"
+              placeholder="e.g. alex"
               className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
               required
             />

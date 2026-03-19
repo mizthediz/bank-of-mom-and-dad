@@ -63,7 +63,7 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 flex flex-col">
+    <div className="min-h-screen bg-slate-50 flex flex-col">
 
       {/* Header */}
       <div className="bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-700 px-6 pt-12 pb-24 relative">
@@ -209,7 +209,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-slate-900" />}>
+    <Suspense fallback={<div className="min-h-screen bg-slate-50" />}>
       <LoginForm />
     </Suspense>
   )
