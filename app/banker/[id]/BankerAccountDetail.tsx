@@ -126,7 +126,7 @@ export default function BankerAccountDetail({ account: initialAccount, annualInt
     <div className="min-h-screen bg-slate-50">
 
       {/* Colored header */}
-      <div className="px-5 pt-5 pb-16 relative" style={{ backgroundColor: theme.hex }}>
+      <div className="px-5 pt-5 pb-16 relative z-0" style={{ backgroundColor: theme.hex }}>
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             <Link
@@ -180,7 +180,7 @@ export default function BankerAccountDetail({ account: initialAccount, annualInt
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 -mt-6 pb-12">
+      <div className="max-w-2xl mx-auto px-4 -mt-6 pb-12 relative z-10">
 
         {/* Action Buttons */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 mb-4">
