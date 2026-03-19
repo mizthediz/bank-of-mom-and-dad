@@ -58,7 +58,6 @@ function PhoneKidAccount() {
           { label: 'Allowance', amt: '+$20.00', color: 'text-emerald-600' },
           { label: 'Interest', amt: '+$1.02', color: 'text-emerald-600' },
           { label: 'Toy store', amt: '-$12.50', color: 'text-rose-500' },
-          { label: 'Birthday money', amt: '+$50.00', color: 'text-emerald-600' },
         ].map((tx) => (
           <div key={tx.label} className="flex justify-between items-center py-1.5 border-b border-slate-100 last:border-0">
             <p className="text-[9px] font-bold text-slate-700">{tx.label}</p>
@@ -274,7 +273,7 @@ export default function HowItWorksPage() {
             </div>
 
             {/* Phone 2 — raised */}
-            <div className="flex flex-col items-center gap-4 mx-auto sm:mx-0 sm:-mt-6">
+            <div className="flex flex-col items-center gap-4 mx-auto sm:mx-0">
               <PhoneKidAccount />
               <div className="text-center max-w-[200px]">
                 <p className="font-black text-slate-800 text-sm">Kid&apos;s personal account</p>
