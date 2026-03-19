@@ -77,7 +77,16 @@ export default function CustomerAccount({ account: initialAccount, tip }: { acco
       {/* Header Banner */}
       <div className="px-4 pt-6 pb-10 relative" style={{ backgroundColor: theme.hex }}>
         <div className="max-w-lg mx-auto">
-          <div className="flex justify-end mb-4">
+          <div className="flex justify-end items-center gap-3 mb-4">
+            <button
+              onClick={() => setShowThemePicker(true)}
+              className={`opacity-70 hover:opacity-100 transition-opacity ${theme.dark ? 'text-white' : 'text-gray-700'}`}
+              title="Customize theme"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
+              </svg>
+            </button>
             <button
               onClick={handleLogout}
               className={`text-sm font-semibold opacity-70 hover:opacity-100 transition-opacity ${theme.dark ? 'text-white' : 'text-gray-700'}`}
@@ -100,27 +109,25 @@ export default function CustomerAccount({ account: initialAccount, tip }: { acco
         </div>
       </div>
 
-      <div className="max-w-lg mx-auto px-4 -mt-4">
-        {/* Customize Button */}
-        <div className="mb-4">
-          <button
-            onClick={() => setShowThemePicker(!showThemePicker)}
-            className="bg-white rounded-xl shadow-sm border border-gray-100 px-4 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition-colors"
-          >
-            🎨 Make it mine
-          </button>
-        </div>
-
-        {showThemePicker && (
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-4">
+      {/* Theme Picker Modal */}
+      {showThemePicker && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setShowThemePicker(false)}>
+          <div className="absolute inset-0 bg-black/30" />
+          <div className="relative bg-white rounded-2xl shadow-xl p-5 w-full max-w-xs" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <p className="font-bold text-gray-700">Pick your theme</p>
+              <button onClick={() => setShowThemePicker(false)} className="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+            </div>
             <ThemePicker
               accountId={account.id}
               currentTheme={account.colorTheme}
-              onThemeChange={(key: ThemeKey) => setAccount({ ...account, colorTheme: key })}
+              onThemeChange={(key: ThemeKey) => { setAccount({ ...account, colorTheme: key }); setShowThemePicker(false) }}
             />
           </div>
-        )}
+        </div>
+      )}
 
+      <div className="relative z-10 max-w-lg mx-auto px-4 -mt-4">
         {/* Period Filter */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-1 mb-4 flex">
           {PERIODS.map((p) => (
