@@ -88,7 +88,7 @@ export default function SignupPage() {
                 required
                 minLength={3}
               />
-              <p className="text-slate-400 text-xs mt-1.5">This is what your kids type in the &quot;Bank Name&quot; field to log in.</p>
+              <p className="text-slate-400 text-xs mt-1.5">This is the username you will use to log in and manage your bank.</p>
             </div>
             <div>
               <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">

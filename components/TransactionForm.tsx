@@ -53,8 +53,8 @@ export default function TransactionForm({ accountId, initialData, onSuccess, onC
   const labelClass = 'block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5'
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 px-4">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-7">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 px-4 pb-4 sm:pb-0">
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-7 max-h-[90vh] overflow-y-auto">
         <h3 className="text-lg font-black text-slate-800 mb-5">
           {initialData ? 'Edit Transaction' : 'Add Transaction'}
         </h3>
