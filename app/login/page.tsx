@@ -69,6 +69,12 @@ function LoginForm() {
       <div className="bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-700 px-6 pt-12 pb-24 relative">
         <div className="absolute top-5 right-5 flex items-center gap-3">
           <Link
+            href="/how-it-works"
+            className="text-xs font-black text-white/50 hover:text-white/90 uppercase tracking-widest transition-colors"
+          >
+            How It Works
+          </Link>
+          <Link
             href="/signup"
             className="text-xs font-black text-white/50 hover:text-white/90 uppercase tracking-widest transition-colors"
           >
