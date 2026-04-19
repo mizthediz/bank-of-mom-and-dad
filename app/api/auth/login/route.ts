@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { prisma } from '@/lib/db'
 import { getSession } from '@/lib/session'
+import { applyMonthlyInterest } from '@/lib/applyMonthlyInterest'
 
 export async function POST(request: Request) {
   const { role, username, password } = await request.json()
@@ -17,6 +18,16 @@ export async function POST(request: Request) {
     session.username = banker.username
     session.bankName = banker.bankName
     await session.save()
+
+    // Auto-apply interest for the current month on every banker login.
+    // The function is idempotent — it skips accounts that already have interest this month.
+    try {
+      const now = new Date()
+      await applyMonthlyInterest(banker.id, now.getFullYear(), now.getMonth() + 1)
+    } catch {
+      // Never block login if interest application fails
+    }
+
     return NextResponse.json({ success: true, redirect: '/banker' })
   }
 
